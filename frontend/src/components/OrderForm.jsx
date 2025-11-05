@@ -27,43 +27,63 @@ const OrderForm = ({ contractAddress, pricePerLiter }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-6">Order Fuel</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Delivery Location</label>
+    <div className="max-w-md mx-auto p-8 bg-gray-700/30 backdrop-blur-sm rounded-xl shadow-xl border border-gray-600">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block text-gray-300 text-sm font-medium mb-2">
+            Delivery Location
+          </label>
           <input
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full p-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter delivery address"
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">
+        <div>
+          <label className="block text-gray-300 text-sm font-medium mb-2">
             Fuel Amount (Liters)
           </label>
           <input
             type="number"
             value={fuelAmount}
             onChange={(e) => setFuelAmount(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full p-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter amount in liters"
             required
           />
         </div>
+        <div className="bg-gray-800/50 p-4 rounded-lg">
+          <div className="flex justify-between text-sm mb-2">
+            <span className="text-gray-400">Price per liter:</span>
+            <span className="text-white">{pricePerLiter} ETH</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-400">Total Price:</span>
+            <span className="text-white">
+              {(
+                parseFloat(fuelAmount || 0) * parseFloat(pricePerLiter)
+              ).toFixed(4)}{" "}
+              ETH
+            </span>
+          </div>
+        </div>
         <button
           type="submit"
           disabled={!address || isLoading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:bg-gray-400"
+          className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-300 disabled:from-gray-600 disabled:to-gray-700"
         >
-          {isLoading ? "Processing..." : "Place Order"}
+          {!address
+            ? "Connect Wallet to Order"
+            : isLoading
+            ? "Processing..."
+            : "Place Order"}
         </button>
         {isSuccess && (
-          <div className="mt-4 p-4 bg-green-100 text-green-700 rounded">
-            Order placed successfully!
+          <div className="mt-4 p-4 bg-green-900/50 border border-green-500 text-green-400 rounded-lg text-center">
+            Order placed successfully! 🎉
           </div>
         )}
       </form>

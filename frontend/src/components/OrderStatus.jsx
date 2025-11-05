@@ -25,17 +25,51 @@ const OrderStatus = ({ orderId, contractAddress }) => {
   if (!order) return null;
 
   return (
-    <div className="p-4 border rounded-lg mb-4">
-      <h3 className="text-lg font-semibold mb-2">Order #{orderId}</h3>
-      <div className="grid grid-cols-2 gap-2">
-        <div className="text-gray-600">Status:</div>
-        <div className="font-medium">{getStatusText(order[5])}</div>
-        <div className="text-gray-600">Amount:</div>
-        <div className="font-medium">{order[3].toString()} liters</div>
-        <div className="text-gray-600">Total Price:</div>
-        <div className="font-medium">{order[4].toString()} wei</div>
-        <div className="text-gray-600">Location:</div>
-        <div className="font-medium">{order[2]}</div>
+    <div className="p-6 bg-gray-700/30 backdrop-blur-sm rounded-xl border border-gray-600">
+      <div className="flex justify-between items-start mb-4">
+        <h3 className="text-lg font-semibold text-white">Order #{orderId}</h3>
+        <span
+          className={`px-3 py-1 rounded-full text-sm font-medium
+          ${
+            order[5] === 0
+              ? "bg-yellow-400/20 text-yellow-400"
+              : order[5] === 1
+              ? "bg-blue-400/20 text-blue-400"
+              : order[5] === 2
+              ? "bg-purple-400/20 text-purple-400"
+              : order[5] === 3
+              ? "bg-green-400/20 text-green-400"
+              : "bg-red-400/20 text-red-400"
+          }`}
+        >
+          {getStatusText(order[5])}
+        </span>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-4">
+          <div>
+            <div className="text-gray-400 text-sm">Amount</div>
+            <div className="text-white font-medium">
+              {order[3].toString()} liters
+            </div>
+          </div>
+          <div>
+            <div className="text-gray-400 text-sm">Total Price</div>
+            <div className="text-white font-medium">
+              {(parseInt(order[4].toString()) / 1e18).toFixed(4)} ETH
+            </div>
+          </div>
+        </div>
+        <div>
+          <div className="text-gray-400 text-sm">Delivery Location</div>
+          <div className="text-white font-medium break-words">{order[2]}</div>
+        </div>
+      </div>
+      <div className="mt-4 pt-4 border-t border-gray-600">
+        <div className="text-gray-400 text-sm">Ordered on</div>
+        <div className="text-white">
+          {new Date(Number(order[6]) * 1000).toLocaleString()}
+        </div>
       </div>
     </div>
   );

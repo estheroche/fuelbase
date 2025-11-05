@@ -12,28 +12,32 @@ const OrderHistory = ({ contractAddress }) => {
     args: [address],
   });
 
-  if (!address) {
-    return (
-      <div className="text-center p-4">
-        Please connect your wallet to view order history
-      </div>
-    );
-  }
-
   return (
-    <div className="max-w-2xl mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-6">Order History</h2>
-      {orderIds?.length === 0 ? (
-        <p className="text-gray-600">No orders found</p>
-      ) : (
-        orderIds?.map((orderId) => (
-          <OrderStatus
-            key={orderId.toString()}
-            orderId={orderId}
-            contractAddress={contractAddress}
-          />
-        ))
-      )}
+    <div className="max-w-4xl mx-auto">
+      <div className="grid gap-6">
+        {!address ? (
+          <div className="text-center p-8 bg-gray-700/30 backdrop-blur-sm rounded-xl border border-gray-600">
+            <p className="text-gray-300 text-lg">
+              Please connect your wallet to view your orders
+            </p>
+          </div>
+        ) : orderIds?.length === 0 ? (
+          <div className="text-center p-8 bg-gray-700/30 backdrop-blur-sm rounded-xl border border-gray-600">
+            <p className="text-gray-300 text-lg">No orders found</p>
+            <p className="text-gray-400 mt-2">
+              Place your first order to get started!
+            </p>
+          </div>
+        ) : (
+          orderIds?.map((orderId) => (
+            <OrderStatus
+              key={orderId.toString()}
+              orderId={orderId}
+              contractAddress={contractAddress}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 };
